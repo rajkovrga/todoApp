@@ -1,0 +1,15 @@
+/home/rajkovrga/Projects/MarbleTODO/Api/Core/bin/Debug/net6.0/Core.deps.json
+/home/rajkovrga/Projects/MarbleTODO/Api/Core/bin/Debug/net6.0/Core.dll
+/home/rajkovrga/Projects/MarbleTODO/Api/Core/bin/Debug/net6.0/Core.pdb
+/home/rajkovrga/Projects/MarbleTODO/Api/Core/bin/Debug/net6.0/EntityContract.dll
+/home/rajkovrga/Projects/MarbleTODO/Api/Core/bin/Debug/net6.0/EntityContract.pdb
+/home/rajkovrga/Projects/MarbleTODO/Api/Core/obj/Debug/net6.0/Core.csproj.AssemblyReference.cache
+/home/rajkovrga/Projects/MarbleTODO/Api/Core/obj/Debug/net6.0/Core.GeneratedMSBuildEditorConfig.editorconfig
+/home/rajkovrga/Projects/MarbleTODO/Api/Core/obj/Debug/net6.0/Core.AssemblyInfoInputs.cache
+/home/rajkovrga/Projects/MarbleTODO/Api/Core/obj/Debug/net6.0/Core.AssemblyInfo.cs
+/home/rajkovrga/Projects/MarbleTODO/Api/Core/obj/Debug/net6.0/Core.csproj.CoreCompileInputs.cache
+/home/rajkovrga/Projects/MarbleTODO/Api/Core/obj/Debug/net6.0/Core.csproj.CopyComplete
+/home/rajkovrga/Projects/MarbleTODO/Api/Core/obj/Debug/net6.0/Core.dll
+/home/rajkovrga/Projects/MarbleTODO/Api/Core/obj/Debug/net6.0/refint/Core.dll
+/home/rajkovrga/Projects/MarbleTODO/Api/Core/obj/Debug/net6.0/Core.pdb
+/home/rajkovrga/Projects/MarbleTODO/Api/Core/obj/Debug/net6.0/ref/Core.dll

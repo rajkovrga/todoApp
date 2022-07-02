@@ -1,0 +1,12 @@
+/home/rajkovrga/Projects/MarbleTODO/Api/EntityContract/bin/Debug/net6.0/EntityContract.deps.json
+/home/rajkovrga/Projects/MarbleTODO/Api/EntityContract/bin/Debug/net6.0/EntityContract.dll
+/home/rajkovrga/Projects/MarbleTODO/Api/EntityContract/bin/Debug/net6.0/EntityContract.pdb
+/home/rajkovrga/Projects/MarbleTODO/Api/EntityContract/obj/Debug/net6.0/EntityContract.csproj.AssemblyReference.cache
+/home/rajkovrga/Projects/MarbleTODO/Api/EntityContract/obj/Debug/net6.0/EntityContract.GeneratedMSBuildEditorConfig.editorconfig
+/home/rajkovrga/Projects/MarbleTODO/Api/EntityContract/obj/Debug/net6.0/EntityContract.AssemblyInfoInputs.cache
+/home/rajkovrga/Projects/MarbleTODO/Api/EntityContract/obj/Debug/net6.0/EntityContract.AssemblyInfo.cs
+/home/rajkovrga/Projects/MarbleTODO/Api/EntityContract/obj/Debug/net6.0/EntityContract.csproj.CoreCompileInputs.cache
+/home/rajkovrga/Projects/MarbleTODO/Api/EntityContract/obj/Debug/net6.0/EntityContract.dll
+/home/rajkovrga/Projects/MarbleTODO/Api/EntityContract/obj/Debug/net6.0/refint/EntityContract.dll
+/home/rajkovrga/Projects/MarbleTODO/Api/EntityContract/obj/Debug/net6.0/EntityContract.pdb
+/home/rajkovrga/Projects/MarbleTODO/Api/EntityContract/obj/Debug/net6.0/ref/EntityContract.dll

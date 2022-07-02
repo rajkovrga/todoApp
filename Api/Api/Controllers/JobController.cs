@@ -1,0 +1,51 @@
+using System.Security.Claims;
+using Core.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using ServiceContract.Job;
+
+namespace Api.Controllers;
+
+[Authorize(AuthenticationSchemes = "Bearer")]
+public class JobController : Controller
+{
+    private readonly IJobService _jobService;
+
+    public JobController(IJobService jobService)
+    {
+        _jobService = jobService;
+    }
+
+    public async Task<IActionResult> Edit([FromBody] JobModel model, int id)
+    {
+        if (!ModelState.IsValid) return BadRequest("Model is not good");
+
+        await _jobService.Edit(model, id);
+        return NoContent();
+    }
+    
+    public async Task<ActionResult> Create([FromBody] JobModel model)
+    {
+        if (!ModelState.IsValid) return BadRequest("Model is not good");
+        
+        var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var newJob = await _jobService.CreateJob(model, id);
+        return StatusCode(StatusCodes.Status201Created, newJob);    
+    }
+    
+    public async Task<IActionResult> Resolve(int id)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        await _jobService.Resolve(id, userId);
+        return NoContent();
+    }
+    
+    public async Task<IActionResult> GetAll()
+    {
+        var user = User;
+        var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var jobs = await _jobService.GetJobs(id);
+        return Ok(jobs);
+    }
+}
