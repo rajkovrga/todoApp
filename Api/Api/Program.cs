@@ -48,6 +48,19 @@ builder.Services
     .AddTransient<IUserService, UserService>()
     .AddTransient<IConfiguration>(x => configuration);
 
+string policyName = "_myAllowSpecificOrigins";
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: policyName,
+        builder =>
+        {
+            builder
+                .WithOrigins("http://localhost:3000")
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+        });
+});
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -81,9 +94,10 @@ app.MapControllerRoute(
     name: "default",
     pattern: "api/{controller=Home}/{action=Index}/{id?}");
 
-app.UseHttpsRedirection();
 
-app.UseAuthentication();
+app.UseRouting();
+app.UseHttpsRedirection();
+app.UseCors(policyName);
 app.UseAuthorization();
 app.UseMiddleware<ErrorHandlerMiddleware>();
 app.MapControllers();

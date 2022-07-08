@@ -19,7 +19,7 @@ public class JobService : IJobService
         _userManager = userManager;
     }
 
-    public async Task Edit(JobModel model, int id)
+    public async Task Edit(JobCreateModel model, int id)
     {
         var task = await _dbContext.Jobs.FindAsync(id);
 
@@ -30,12 +30,10 @@ public class JobService : IJobService
 
         task.Description = model.Description;
         task.Title = model.Title;
-
-        await _dbContext.AddAsync(task);
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task<JobModel> CreateJob(JobModel model, string userId)
+    public async Task<JobModel> CreateJob(JobCreateModel model, string userId)
     {
         if (model is null)
         {
@@ -55,7 +53,7 @@ public class JobService : IJobService
         
         await _dbContext.SaveChangesAsync();
 
-        var newJob = _dbContext.Jobs.First(x => x.Title == job.Title && x.AppUser.Id == model.User.Id);
+        var newJob = _dbContext.Jobs.First(x => x.Title == job.Title && x.AppUser.Id == userId);
         
         return new JobModel()
         {
@@ -74,13 +72,14 @@ public class JobService : IJobService
         {
             throw new ModelNotFoundException();
         }
-        _dbContext.Remove(task);
+        task.DeletedAt = DateTime.Now;
+        
         await _dbContext.SaveChangesAsync();
     }
 
     public async Task<List<JobModel>?> GetJobs(string userId)
     {
-        var jobs = await _dbContext.Jobs.Where(x => x.AppUser.Id == userId && x.DeletedAt == null).ToListAsync();
+        var jobs = await _dbContext.Jobs.Include(x => x.AppUser).Where(x => x.AppUser.Id == userId && x.DeletedAt == null).ToListAsync();
 
         return jobs?.Select(x => new JobModel()
         {

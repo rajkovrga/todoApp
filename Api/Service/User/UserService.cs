@@ -53,7 +53,6 @@ public class UserService : IUserService
 
         return new UserReturnModel()
         {
-            Id = newUser.Id,
             FirstName = newUser.FirstName,
             LastName = newUser.LastName,
             Email = newUser.Email

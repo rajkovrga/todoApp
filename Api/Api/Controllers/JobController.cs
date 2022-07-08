@@ -16,7 +16,8 @@ public class JobController : Controller
         _jobService = jobService;
     }
 
-    public async Task<IActionResult> Edit([FromBody] JobModel model, int id)
+    [HttpPut]
+    public async Task<IActionResult> Edit([FromBody] JobCreateModel model, int id)
     {
         if (!ModelState.IsValid) return BadRequest("Model is not good");
 
@@ -24,7 +25,8 @@ public class JobController : Controller
         return NoContent();
     }
     
-    public async Task<ActionResult> Create([FromBody] JobModel model)
+    [HttpPost]
+    public async Task<ActionResult> Create([FromBody] JobCreateModel model)
     {
         if (!ModelState.IsValid) return BadRequest("Model is not good");
         
@@ -33,6 +35,7 @@ public class JobController : Controller
         return StatusCode(StatusCodes.Status201Created, newJob);    
     }
     
+    [HttpPut]
     public async Task<IActionResult> Resolve(int id)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
