@@ -1,25 +1,25 @@
-import { Component } from "react";
 import QuoteService from "services/quote.service";
 import calendarItem from '../../../assets/icons/icon-calendar.svg';
 import plusItem from '../../../assets/icons/icon-plus.svg';
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { QuoteModel } from "models";
 import { useParams } from "react-router";
 import moment from "moment";
+import DateProvider, { DateContext } from "context/DateProvider";
 
 const Quote = () => {
 
     const quoteService = new QuoteService;
 
     const [quote, setQuote] = useState<QuoteModel>();
-    const { date } = useParams();
+    const {contextDate} = useContext(DateContext);
 
     useEffect(() => {
         quoteService.getQuote().then((response) => {
         setQuote(response.data);
       })
       .catch(r => {
-        console.log(r)
+        alert(r)
       })
     }, []);
 
@@ -38,7 +38,7 @@ const Quote = () => {
                 <div className="wrap">
                     <div className="date-wrap">
                         <img className="icon" src={calendarItem} alt="Calendar" />
-                        <time>{moment(date, 'DD-MM-YYYY').format('DD / MM / YYYY')}</time>
+                        <time>{moment(contextDate.date, 'DD-MM-YYYY').format('DD / MM / YYYY')}</time>
                     </div>
                 </div>
             </div>
@@ -46,4 +46,5 @@ const Quote = () => {
     );
 
 }
+
 export default Quote;

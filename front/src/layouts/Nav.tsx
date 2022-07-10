@@ -1,7 +1,5 @@
 import Logout from "components/Logout";
 import moment from "moment";
-import { Component } from "react";
-import { mockComponent } from "react-dom/test-utils";
 import { Link } from "react-router-dom";
 
 const Nav = () => {
@@ -17,7 +15,7 @@ const Nav = () => {
                     <Link to="/login">Login</Link>
                 </li>
                 <li className="nav__item">
-                    <Link to={"/" + moment().format("DD-MM-YYYY")}>Jobs</Link>
+                    <Link to={`/${moment().format("DD-MM-YYYY")}`}>Jobs</Link>
                 </li>
                 <li className="nav__item">
                     <Logout />
