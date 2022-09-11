@@ -1,3 +1,4 @@
+import DateProvider from "context/DateProvider";
 import Auth from "pages/auth/Auth";
 import Jobs from "pages/jobs/Jobs";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
@@ -12,10 +13,9 @@ function AppRouter() {
             <Routes>
                 <Route path=""  element={<Home/>} />
                 <Route path="login" element={<Auth/>} />
-                <Route path=":date" element={<Jobs/>}/>
+                <Route path=":date" element={<DateProvider><Jobs/></DateProvider>}/>
                 <Route path="*" to="/404" element={<PageNotFound/>} />
                 <Route path="/404" element={<PageNotFound/>} />
-
             </Routes>
         </Router>
     );

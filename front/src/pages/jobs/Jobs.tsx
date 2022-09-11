@@ -3,34 +3,36 @@ import Quote from "./components/Quote";
 import PropTypes from 'prop-types';
 import { useLocation, useNavigate, useParams } from "react-router";
 import DateProvider, { DateContext } from "context/DateProvider";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 
 const Jobs = () => {
 
     const url = useLocation();
     const navigate = useNavigate();
-    const  { date } = useParams();
-    const {contextDate, setDate} = useContext(DateContext);
+    const { date } = useParams();
+    const [ contextDate, setDate ] = useContext(DateContext);
 
-    setDate({
-        ...contextDate,
-        date
-    });
 
-    if(!/[//](\d{1,2})-(\d{1,2})-(\d{4})$/.test(url.pathname))
-    {
-      return navigate('/'); 
+    useEffect(() => {
+        setDate({
+            ...contextDate,
+            date
+        });
+    }, []);
+
+
+
+    if (!/[//](\d{1,2})-(\d{1,2})-(\d{4})$/.test(url.pathname)) {
+        return navigate('/404');
     }
 
 
     return (
-        <div>
-            <DateProvider>
+            <div>
                 <Quote />
                 <JobList />
-            </DateProvider>
-        </div>
+            </div>
     );
 }
 
