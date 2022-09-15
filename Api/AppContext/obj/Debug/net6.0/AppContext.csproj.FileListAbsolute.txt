@@ -1,0 +1,17 @@
+/home/rajkovrga/Projects/MarbleTODO/Api/AppContext/bin/Debug/net6.0/AppContext.deps.json
+/home/rajkovrga/Projects/MarbleTODO/Api/AppContext/bin/Debug/net6.0/AppContext.runtimeconfig.json
+/home/rajkovrga/Projects/MarbleTODO/Api/AppContext/bin/Debug/net6.0/AppContext.dll
+/home/rajkovrga/Projects/MarbleTODO/Api/AppContext/bin/Debug/net6.0/AppContext.pdb
+/home/rajkovrga/Projects/MarbleTODO/Api/AppContext/bin/Debug/net6.0/EntityContract.dll
+/home/rajkovrga/Projects/MarbleTODO/Api/AppContext/bin/Debug/net6.0/EntityContract.pdb
+/home/rajkovrga/Projects/MarbleTODO/Api/AppContext/obj/Debug/net6.0/AppContext.csproj.AssemblyReference.cache
+/home/rajkovrga/Projects/MarbleTODO/Api/AppContext/obj/Debug/net6.0/AppContext.GeneratedMSBuildEditorConfig.editorconfig
+/home/rajkovrga/Projects/MarbleTODO/Api/AppContext/obj/Debug/net6.0/AppContext.AssemblyInfoInputs.cache
+/home/rajkovrga/Projects/MarbleTODO/Api/AppContext/obj/Debug/net6.0/AppContext.AssemblyInfo.cs
+/home/rajkovrga/Projects/MarbleTODO/Api/AppContext/obj/Debug/net6.0/AppContext.csproj.CoreCompileInputs.cache
+/home/rajkovrga/Projects/MarbleTODO/Api/AppContext/obj/Debug/net6.0/AppContext.csproj.CopyComplete
+/home/rajkovrga/Projects/MarbleTODO/Api/AppContext/obj/Debug/net6.0/AppContext.dll
+/home/rajkovrga/Projects/MarbleTODO/Api/AppContext/obj/Debug/net6.0/refint/AppContext.dll
+/home/rajkovrga/Projects/MarbleTODO/Api/AppContext/obj/Debug/net6.0/AppContext.pdb
+/home/rajkovrga/Projects/MarbleTODO/Api/AppContext/obj/Debug/net6.0/AppContext.genruntimeconfig.cache
+/home/rajkovrga/Projects/MarbleTODO/Api/AppContext/obj/Debug/net6.0/ref/AppContext.dll

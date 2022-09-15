@@ -1,0 +1,19 @@
+.footer {
+    margin-top: auto;
+    padding: 20px 0;
+    background-color: #333;
+    text-align: center;
+    position: fixed !important;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    }
+    
+    .footer .copy {
+    display: block;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 300;
+    }
+    
+    
