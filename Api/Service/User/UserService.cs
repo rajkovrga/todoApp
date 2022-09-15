@@ -75,7 +75,7 @@ public class UserService : IUserService
 
         var claims = new Claim[]
         {
-            new(JwtRegisteredClaimNames.Sub, user?.Id),
+            new(JwtRegisteredClaimNames.Sub, user!.Id),
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new(JwtRegisteredClaimNames.Email, user.Email)
         };

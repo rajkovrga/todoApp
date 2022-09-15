@@ -1,17 +1,19 @@
 import { BASE_URL } from "api";
 import axios from "axios";
-import { LoginModel, RegistrationModel, RegistrationReturnModel, TokenModel } from "models";
+import { LoginModel, RegistrationModel} from "models";
 
 export default class AuthService {
 
     getToken(data: LoginModel)
     {
-        return axios.post(BASE_URL + '/User/CreateAToken', data);
+        console.log(BASE_URL)
+
+        return axios.post(BASE_URL + '/User/CreateToken', data);
     }
 
     registerUser(data: RegistrationModel)
     {
-        return axios.post(BASE_URL + '/User/Register', data);
+        return axios.post(BASE_URL + '/User/Register', JSON.stringify(data));
     }
     
 }

@@ -1,7 +1,10 @@
 import { ErrorMessage, Field, Form, Formik } from "formik";
+import { LoginModel } from "models";
+import AuthService from "services/auth.service";
 import * as Yup from 'yup';
 
 const Login = () => {
+    const authService = new AuthService;
 
     return (
         <Formik
@@ -17,8 +20,29 @@ const Login = () => {
                     .min(6, 'Password must be at least 6 characters')
                     .required('Password is required')
             })}
-            onSubmit={fields => {
-                alert('SUCCESS!! :-)\n\n' + JSON.stringify(fields, null, 4))
+            onSubmit={(fields, { resetForm }) => {
+
+                const model: LoginModel = {
+                    email: fields.email,
+                    password: fields.password
+                }
+                alert('SUCCESS!! :-)\n\n' + JSON.stringify(model))
+
+                authService.getToken(model).then(response => {
+                    if(response.status == 201)
+                    {
+                        console.log(response.data);
+                    }
+                }).catch(err => {
+                    console.log(err)
+                });
+
+                resetForm({
+                    values: {
+                        password: '',
+                        email: ''
+                    }
+                });
             }}
             render={({ errors, status, touched }) => (
                 <Form name='login-form'>

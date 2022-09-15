@@ -13,6 +13,19 @@ using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
+string policyName = "_myAllowSpecificOrigins";
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(policyName,
+        builder =>
+        {
+            builder.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+        });
+});
+
+
 var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
 
 if (environment is null)
@@ -34,11 +47,11 @@ var configuration = new ConfigurationBuilder()
 
 var connectionString = configuration.GetConnectionString("ToDoDb");
 
+
 builder.Services.AddDbContext<DataContext>(ctx =>
 {        
     ctx.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 });
-
 
 builder.Services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<DataContext>()
     .AddDefaultTokenProviders();
@@ -47,19 +60,6 @@ builder.Services
     .AddTransient<IJobService, JobService>()
     .AddTransient<IUserService, UserService>()
     .AddTransient<IConfiguration>(x => configuration);
-
-string policyName = "_myAllowSpecificOrigins";
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy(name: policyName,
-        builder =>
-        {
-            builder
-                .WithOrigins("http://localhost:3000")
-                .AllowAnyMethod()
-                .AllowAnyHeader();
-        });
-});
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -90,16 +90,19 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+
+app.UseMiddleware<ErrorHandlerMiddleware>();
+
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+
+app.UseRouting();
+
+app.UseCors(policyName);
+app.UseAuthorization();
+
 app.MapControllerRoute(
     name: "default",
     pattern: "api/{controller=Home}/{action=Index}/{id?}");
-
-
-app.UseRouting();
-app.UseHttpsRedirection();
-app.UseCors(policyName);
-app.UseAuthorization();
-app.UseMiddleware<ErrorHandlerMiddleware>();
-app.MapControllers();
 
 app.Run();

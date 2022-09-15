@@ -8,24 +8,27 @@
 
     <ItemGroup>
       <PackageReference Include="EntityFramework" Version="6.4.4" />
-      <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.6" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.6" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.6">
+      <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.9" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.9" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.9">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Relational.Design" Version="1.1.6" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.6">
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.9">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
       <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
       <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
-      <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.1" />
+      <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.2" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\EntityContract\EntityContract.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Migrations\" />
     </ItemGroup>
 
 </Project>
