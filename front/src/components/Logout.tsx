@@ -1,18 +1,15 @@
-import {Component, MouseEvent } from "react";
+import { MouseEvent } from "react";
 import { Link } from "react-router-dom";
 
-class Logout extends Component {
+const Logout = () => {
 
-    handleClick(event: MouseEvent) {
+    const handleClick = (event: MouseEvent) => {
         event.preventDefault();
-      }
-
-    render(){
-        return (
-            <Link onClick={this.handleClick} to="#">Logout</Link>
-        );
-
     }
+
+    return (
+        <Link onClick={handleClick} to="#">Logout</Link>
+    );
 }
 
 export default Logout;

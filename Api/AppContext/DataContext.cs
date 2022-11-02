@@ -11,13 +11,7 @@ public class DataContext : IdentityDbContext<AppUser>
     {
         
     }
-    
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        
-        base.OnModelCreating(modelBuilder);
-    }
-
+  
     public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = new CancellationToken())
     {
         var items = ChangeTracker.Entries();
@@ -40,7 +34,6 @@ public class DataContext : IdentityDbContext<AppUser>
     
         return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
     }
-    
-
+   
     public DbSet<Job> Jobs { get; set; } = null!;
 }

@@ -1,10 +1,15 @@
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import { LoginModel } from "models";
-import AuthService from "services/auth.service";
 import * as Yup from 'yup';
+import { ActionTypes } from "../../../constants/ActionTypes";
+import { LoginModel } from "../../../models";
+import { getToken } from "../../../services/auth.service";
+import { token } from "../../../store/token";
 
-const Login = () => {
-    const authService = new AuthService;
+const Login = () =>  {
+    
+    const getTokenFromService = async (model: LoginModel) => {
+        await getToken(model);
+    }
 
     return (
         <Formik
@@ -21,47 +26,56 @@ const Login = () => {
                     .required('Password is required')
             })}
             onSubmit={(fields, { resetForm }) => {
-
                 const model: LoginModel = {
                     email: fields.email,
                     password: fields.password
                 }
-                alert('SUCCESS!! :-)\n\n' + JSON.stringify(model))
 
-                authService.getToken(model).then(response => {
-                    if(response.status == 201)
-                    {
-                        console.log(response.data);
-                    }
-                }).catch(err => {
-                    console.log(err)
-                });
+                let resultField = document.getElementById('register-result') as HTMLElement;
 
+                try {
+                    const result = getTokenFromService(model);
+                    console.log(result);
+                        token.dispatch({type: ActionTypes.ADD_TOKEN_DATA, payload:{
+                            token: result.data.token,
+                            permissions: [],
+                            user: {}
+                        }});
+                } catch(error)
+                {
+
+                }
+                
                 resetForm({
                     values: {
                         password: '',
                         email: ''
                     }
                 });
-            }}
-            render={({ errors, status, touched }) => (
-                <Form name='login-form'>
-                    <div className="form-group">
-                        <label>Your email</label>
-                        <Field name="email" type="text" className={'form-control' + (errors.email && touched.email ? ' is-invalid' : '')} />
-                        <ErrorMessage name="email" component="div" className="invalid-feedback" />
+            }}>
+            {({ errors, status, touched }) => (
+                <>
+                    <Form name='login-form'>
+                        <div className="form-group">
+                            <label>Your email</label>
+                            <Field name="email" type="text" className={'form-control' + (errors.email && touched.email ? ' is-invalid' : '')} />
+                            <ErrorMessage name="email" component="div" className="invalid-feedback" />
+                        </div>
+                        <div className="form-group">
+                            <label>Your password</label>
+                            <Field name="password" type="password" className={'form-control' + (errors.password && touched.password ? ' is-invalid' : '')} />
+                            <ErrorMessage name="password" component="div" className="invalid-feedback" />
+                        </div>
+                        <div className="form-group">
+                            <button type="submit" className="btn btn-primary btn-block"> Login </button>
+                        </div>
+                    </Form>
+                    <div>
+                        <h5 id="login-result"></h5>
                     </div>
-                    <div className="form-group">
-                        <label>Your password</label>
-                        <Field name="password" type="password" className={'form-control' + (errors.password && touched.password ? ' is-invalid' : '')} />
-                        <ErrorMessage name="password" component="div" className="invalid-feedback" />
-                    </div>
-                    <div className="form-group">
-                        <button type="submit" className="btn btn-primary btn-block"> Login </button>
-                    </div>
-                </Form>
+                </>
             )}
-        />
+        </Formik>
     )
 
 }

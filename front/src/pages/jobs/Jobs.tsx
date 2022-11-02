@@ -2,8 +2,8 @@ import JobList from "./components/JobList";
 import Quote from "./components/Quote";
 import PropTypes from 'prop-types';
 import { useLocation, useNavigate, useParams } from "react-router";
-import DateProvider, { DateContext } from "context/DateProvider";
 import { useContext, useEffect } from "react";
+import { DateContext } from "../../context/DateProvider";
 
 
 const Jobs = () => {
@@ -21,12 +21,9 @@ const Jobs = () => {
         });
     }, []);
 
-
-
     if (!/[//](\d{1,2})-(\d{1,2})-(\d{4})$/.test(url.pathname)) {
         return navigate('/404');
     }
-
 
     return (
             <div>

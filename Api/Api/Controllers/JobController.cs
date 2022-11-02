@@ -7,6 +7,7 @@ using ServiceContract.Job;
 namespace Api.Controllers;
 
 [Authorize(AuthenticationSchemes = "Bearer")]
+[Authorize(Policy = "BasicActions")]
 public class JobController : Controller
 {
     private readonly IJobService _jobService;

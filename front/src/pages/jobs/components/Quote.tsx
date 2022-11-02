@@ -1,27 +1,19 @@
-import QuoteService from "services/quote.service";
 import calendarItem from '../../../assets/icons/icon-calendar.svg';
 import plusItem from '../../../assets/icons/icon-plus.svg';
-import { useState, useEffect, useContext, CSSProperties } from "react";
-import { QuoteModel } from "models";
+import { useState, useEffect, useContext } from "react";
 import moment from "moment";
-import { DateContext } from "context/DateProvider";
-import { ClipLoader, DotLoader, PacmanLoader, RingLoader } from "react-spinners";
+import { DateContext } from '../../../context/DateProvider';
+import { QuoteModel } from '../../../models';
+import { getQuote } from '../../../services/quote.service';
+import Loading from '../../../components/Loading';
 
 const Quote = () => {
-
-    const override: CSSProperties = {
-        display: "block",
-        margin: "0 auto",
-        borderColor: "white",
-      };
-
-    const quoteService = new QuoteService;
     const [quote, setQuote] = useState<QuoteModel>();
     const [contextDate, setDate] = useContext(DateContext);
     const [isVisible, setVisibility] = useState(false);
 
     useEffect(() => {
-        quoteService.getQuote().then((response) => {
+        getQuote().then((response) => {
         setQuote(response.data);
 
         setVisibility(true);
@@ -44,7 +36,7 @@ const Quote = () => {
                             <div className="header-cite"> {quote?.author} - Author</div>
                         </div>
                         :
-                        <DotLoader cssOverride={override} size={150}/>
+                        <Loading />
                     }
                 </div>
                 <div className="header-inner">
@@ -57,9 +49,7 @@ const Quote = () => {
                     </div>
                 </div>
             </header>
-        
     );
-
 }
 
 export default Quote;

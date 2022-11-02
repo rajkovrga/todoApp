@@ -1,10 +1,7 @@
-import axios, { AxiosResponse } from "axios";
-import { QuoteModel } from "models";
+import axios from "axios";
+import { GET_RANDOM_QUOTE_ROUTE } from "../api/routes";
+import { QuoteModel } from "../models";
 
-export default class QuoteService {
-
-    getQuote()
-    {
-        return axios.get<QuoteModel>('https://api.quotable.io/random');
-    }
+export const getQuote = async () => {
+    return await axios.get<QuoteModel>(GET_RANDOM_QUOTE_ROUTE);
 }

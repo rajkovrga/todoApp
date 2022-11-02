@@ -10,6 +10,13 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Api.Formatters;
+using System;
+using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore.Internal;
+using AppContext.Seeders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,7 +32,6 @@ builder.Services.AddCors(options =>
         });
 });
 
-
 var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
 
 if (environment is null)
@@ -39,6 +45,7 @@ var path = Path.GetFullPath(environment switch
     _ => throw new Exception("Invalid ASPNETCORE_ENVIRONMENT")
 });
 
+
 var configuration = new ConfigurationBuilder()
     .SetBasePath(path)
     .AddJsonFile("appsettings.json", true)
@@ -46,12 +53,7 @@ var configuration = new ConfigurationBuilder()
     .Build();
 
 var connectionString = configuration.GetConnectionString("ToDoDb");
-
-
-builder.Services.AddDbContext<DataContext>(ctx =>
-{        
-    ctx.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
-});
+builder.Services.AddDbContext<DataContext>(ctx => ctx.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
 builder.Services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<DataContext>()
     .AddDefaultTokenProviders();
@@ -59,12 +61,34 @@ builder.Services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<D
 builder.Services
     .AddTransient<IJobService, JobService>()
     .AddTransient<IUserService, UserService>()
-    .AddTransient<IConfiguration>(x => configuration);
+    .AddTransient<IConfiguration>(x => configuration)
+    .AddTransient<IEmailService, EmailService>();
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("BasicActions", policy =>
+        policy.RequireRole("user", "admin"));
+
+    options.AddPolicy("UserActions", policy =>
+        policy.RequireRole("user"));
+
+    options.AddPolicy("AdminActions", policy =>
+        policy.RequireRole("admin"));
+
+});
 
 builder.Services.AddControllers();
+builder.Services.AddControllers(o => o.InputFormatters.Insert(o.InputFormatters.Count, new TextPlainInputFormatter()));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireDigit = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireLowercase = false;
+});
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -84,12 +108,48 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 var app = builder.Build();
 
+using(var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetService<DataContext>();
+}
+
+if (args.Length > 0 && !string.IsNullOrEmpty(args[0]))
+{
+    await SeedData(app, args[0]);
+    return;
+}
+
+async Task SeedData(IHost app, string arg)
+{
+    var scopedFactory = app.Services.GetService<IServiceScopeFactory>();
+
+    using(var scope = scopedFactory?.CreateScope())
+    {
+        var service = scope?.ServiceProvider.GetService<DataContext>();
+
+        if(arg.ToLower().Contains("seed"))
+        {
+            var userManagerService = scope?.ServiceProvider.GetService<UserManager<AppUser>>();
+            
+            await (new RoleSeeder(service!)).Seed();
+            await (new UserSeeder(service!, userManagerService!)).Seed();
+        }
+
+        if (arg.ToLower().Contains("roles"))
+        {
+            await (new RoleSeeder(service!)).Seed();
+        }
+
+    }
+
+    Console.WriteLine("Data successed succesfully");
+}
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
 
 app.UseMiddleware<ErrorHandlerMiddleware>();
 

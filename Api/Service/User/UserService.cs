@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using ServiceContract.User;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
+using Microsoft.EntityFrameworkCore;
 
 namespace Service.User;
 
@@ -28,38 +29,63 @@ public class UserService : IUserService
 
     public async Task<UserReturnModel> Register(UserModel model)
     {
-        if (model == null)
+        if (model is null)
         {
             throw new NullReferenceException();
         }
 
         var appUser = new AppUser()
         {
-            Email = model.Email,
-            FirstName = model.FirstName,
-            LastName = model.LastName,
-            UserName = model.Email
+            Email = model!.Email,
+            FirstName = model.FirstName!,
+            LastName = model.LastName!,
+            UserName = model.Email,
+            EmailConfirmed = false
         };
 
-        var r = _userManager;
-        var result = await _userManager.CreateAsync(appUser, model.Password);
+        var result = await _userManager.CreateAsync(appUser, model?.Password);
         if (!result.Succeeded)
         {
-            throw new Exception();
             throw new IdentityException("User is not registered");
         }
 
-        var newUser = _dataContext.Users.First(x => x.Email == model.Email);
+        var newUser = _dataContext.Users.First(x => x.Email == model!.Email);
+        
+        await _userManager.AddToRoleAsync(newUser, "user");
 
         return new UserReturnModel()
         {
             FirstName = newUser.FirstName,
             LastName = newUser.LastName,
-            Email = newUser.Email
+            Email = newUser.Email,
+            Id = newUser.Id
         };
     }
 
-    public async Task<TokenResultModel> CreateToken(LoginModel model)
+    public string CreateToken(string email, string id)
+    {
+        var claims = new Claim[]
+        {
+            new(JwtRegisteredClaimNames.Sub, id),
+            new(JwtRegisteredClaimNames.Email, email),
+            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+        };
+
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
+
+        var token = new JwtSecurityToken(
+            _configuration["Jwt:Issuer"],
+            _configuration["Jwt:Audience"],
+            claims,
+            signingCredentials: creds,
+            expires: DateTime.UtcNow.AddMinutes(45)
+        );
+
+        return new JwtSecurityTokenHandler().WriteToken(token);
+    }
+
+    public async Task<TokenResultModel> CreateAuthToken(LoginModel model)
     {
         var user = await _userManager.FindByEmailAsync(model.Email);
 
@@ -88,7 +114,7 @@ public class UserService : IUserService
             _configuration["Jwt:Audience"],
             claims,
             signingCredentials: creds,
-            expires: DateTime.Now.AddHours(1)
+            expires: DateTime.UtcNow.AddHours(1)
         );
 
         return new TokenResultModel()
@@ -96,5 +122,39 @@ public class UserService : IUserService
             Token = new JwtSecurityTokenHandler().WriteToken(token)
         };
 
+    }
+
+    public async Task VerifyUser(string email)
+    {
+        var user = await _dataContext.Users.FirstOrDefaultAsync(x => x.Email == email);
+
+        if (user is null)
+            throw new ModelNotFoundException("User not found");
+
+        if (user.EmailConfirmed)
+            throw new ModelNotFoundException("User just verified");
+
+        user.EmailConfirmed = true;
+
+        await _dataContext.SaveChangesAsync();
+    }
+
+    public async Task<UserReturnModel> GetUserByEmail(string email)
+    {
+        var user = await _dataContext.Users.FirstOrDefaultAsync(x => x.Email == email);
+
+        if (user is null)
+            throw new ModelNotFoundException("User not found");
+
+        if (user.EmailConfirmed)
+            throw new ModelNotFoundException("User just verified");
+
+        return new UserReturnModel
+        {
+            Id = user.Id,
+            Email = user.Email,
+            FirstName = user.FirstName,
+            LastName = user.LastName
+        };
     }
 }

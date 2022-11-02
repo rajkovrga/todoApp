@@ -3,16 +3,19 @@ import './App.css';
 import Footer from './layouts/Footer';
 import AppRouter from './layouts/AppRouter';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Provider } from 'react-redux';
+import token from './store/token';
 
 class App extends React.Component {
 
-  render()
-  {
+  render() {
     return (
-      <div>
-        <AppRouter />
-        <Footer />
-      </div>
+      <>
+        <Provider store={token}>
+          <AppRouter />
+          <Footer />
+        </Provider>
+      </>
     );
   }
 }

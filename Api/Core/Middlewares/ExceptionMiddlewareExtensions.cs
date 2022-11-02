@@ -1,11 +1,8 @@
-using Microsoft.AspNetCore.Builder;
 using System.Net;
 using System.Text.Json;
 using Core.Exceptions;
 using Core.Models;
-using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
 
 namespace Core.Middlewares;
 
@@ -27,6 +24,7 @@ public class ErrorHandlerMiddleware
         catch (Exception error)
         {
             var response = context.Response;
+
             response.ContentType = "application/json";
             var errorDetails = new ErrorDetails()
             {
@@ -35,6 +33,9 @@ public class ErrorHandlerMiddleware
 
             switch (error)
             {
+                case ArgumentException:
+                    response.StatusCode = (int)HttpStatusCode.MethodNotAllowed;
+                    break;
                 case IdentityException:
                     response.StatusCode = (int) HttpStatusCode.NotFound;
                     break;
@@ -43,6 +44,9 @@ public class ErrorHandlerMiddleware
                     break;
                 case NullReferenceException:
                     response.StatusCode = (int) HttpStatusCode.BadRequest;
+                    break;
+                case ExpireTokenException:
+                    response.StatusCode = (int)HttpStatusCode.Unauthorized;
                     break;
                 default:
                     errorDetails.Message = error.Message;
