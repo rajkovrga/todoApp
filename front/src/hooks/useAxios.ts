@@ -1,10 +1,9 @@
 import { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { StateTokenModel } from "../reducers/tokenReducer";
+import { StateTokenModel } from "../features/reducers/tokenReducer";
 
 const useAxios = () => {
-
     const [response, setResponse] = useState([]);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
@@ -27,13 +26,13 @@ const useAxios = () => {
             }
         };
 
-        const controller = new AbortController;
-
         try {
             setLoading(true);
+            const ctrl = new AbortController;
+            setController(ctrl);
             const res = await axiosInstance[method?.toLowerCase()](url, {
                 ...requestConfig,
-                signal: controller.signal
+                signal: ctrl.signal
             })
             console.log(res);
             setResponse(res);

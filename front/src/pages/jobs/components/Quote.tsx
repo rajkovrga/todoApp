@@ -13,14 +13,14 @@ const Quote = () => {
     const [isVisible, setVisibility] = useState(false);
 
     useEffect(() => {
-        getQuote().then((response) => {
-        setQuote(response.data);
+    //     getQuote().then((response) => {
+    //     setQuote(response.data);
 
-        setVisibility(true);
-      })
-      .catch(r => {
-        alert(r)
-      })
+    //     setVisibility(true);
+    //   })
+    //   .catch(r => {
+    //     alert(r)
+    //   })
     }, []);
 
     return (

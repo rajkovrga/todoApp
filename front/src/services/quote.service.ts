@@ -1,7 +1,6 @@
-import axios from "axios";
-import { GET_RANDOM_QUOTE_ROUTE } from "../api/routes";
-import { QuoteModel } from "../models";
+import axiosQuote from "../api/axiosQuote";
+import { RANDOM_QUOTE_ROUTE } from "../api/routes";
 
-export const getQuote = async () => {
-    return await axios.get<QuoteModel>(GET_RANDOM_QUOTE_ROUTE);
+export const getQuote = () => {
+    return axiosQuote.get(RANDOM_QUOTE_ROUTE)
 }

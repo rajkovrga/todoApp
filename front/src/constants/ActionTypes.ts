@@ -1,5 +1,0 @@
-export enum ActionTypes {
-    ADD_TOKEN_DATA = 'ADD_TOKEN_DATA',
-    REMOVE_TOKEN_DATA = 'REMOVE_TOKEN_DATA',
-    GET_TOKEN_DATA = 'GET_TOKEN_DATA'
-};

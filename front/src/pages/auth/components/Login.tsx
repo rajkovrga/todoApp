@@ -1,15 +1,8 @@
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as Yup from 'yup';
-import { ActionTypes } from "../../../constants/ActionTypes";
 import { LoginModel } from "../../../models";
-import { getToken } from "../../../services/auth.service";
-import { token } from "../../../store/token";
 
 const Login = () =>  {
-    
-    const getTokenFromService = async (model: LoginModel) => {
-        await getToken(model);
-    }
 
     return (
         <Formik
@@ -25,26 +18,23 @@ const Login = () =>  {
                     .min(6, 'Password must be at least 6 characters')
                     .required('Password is required')
             })}
-            onSubmit={(fields, { resetForm }) => {
+            onSubmit={async (fields, { resetForm }) => {
                 const model: LoginModel = {
                     email: fields.email,
                     password: fields.password
                 }
 
-                let resultField = document.getElementById('register-result') as HTMLElement;
-
-                try {
-                    const result = getTokenFromService(model);
-                    console.log(result);
-                        token.dispatch({type: ActionTypes.ADD_TOKEN_DATA, payload:{
-                            token: result.data.token,
-                            permissions: [],
-                            user: {}
-                        }});
-                } catch(error)
+                try
+                {
+                  //  const result = await loginUser(model);
+                  
+                }
+                catch(err)
                 {
 
                 }
+                        
+               
                 
                 resetForm({
                     values: {

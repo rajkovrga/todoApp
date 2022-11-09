@@ -1,10 +1,10 @@
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as Yup from 'yup';
-import {useState} from 'react';
+import { useState } from 'react';
 import { RegistrationModel } from "../../../models";
 import { registerUser } from "../../../services/auth.service";
 
-const Registration = () => {
+const Registration = async () => {
     const [resultMessage, setResultMessage] = useState('');
     const init = {
         firstName: '',
@@ -13,7 +13,7 @@ const Registration = () => {
         email: ''
     };
 
-    return (<>               
+    return (<>
         <Formik
             initialValues={init}
             validationSchema={Yup.object().shape({
@@ -28,40 +28,37 @@ const Registration = () => {
                     .min(6, 'Password must be at least 6 characters')
                     .required('Password is required')
             })}
-            onSubmit={(fields, {resetForm}) => {
+            onSubmit={async (fields, { resetForm }) => {
                 const model: RegistrationModel = {
                     firstName: fields.firstName,
                     lastName: fields.lastName,
                     password: fields.password,
                     email: fields.email
-                }                
-                registerUser(model)
-                    .then(x => {
-                        resetForm({
-                            values: init
-                        });
+                }
 
-                        if (x.status === 201) {
-                            setResultMessage(`Verification email sent or <a href='verification/resend'>Resend again</a>`);
-                        }
-                        else if(x.status === 400) {
-                            setResultMessage('Any data is not in good format');
-                        }
-                        else if(x.status === 404)
-                        {
-                            setResultMessage('User is not saved');
-                        }
-                        else {
-                            setResultMessage('Server error, try again later');
-                        }
-                    })
-                    .catch(x => {
-                        setResultMessage('Application error, try again later');
+                try {
+                    resetForm({
+                        values: init
                     });
+
+                    await registerUser(model);
+                    setResultMessage(`Verification email sent or <a href='verification/resend'>Resend again</a>`);
+
+                } catch (err: any) {
+                    if (err.status === 400) {
+                        setResultMessage('Any data is not in good format');
+                    }
+                    else if (err.status === 404) {
+                        setResultMessage('User is not saved');
+                    }
+                    else {
+                        setResultMessage('Server error, try again later');
+                    }
+                }
             }}
         >
             {({ errors, status, touched }) =>
-                <Form  name='register-form'>
+                <Form name='register-form'>
                     <div className="form-group">
                         <label>First name</label>
                         <Field name="firstName" type="text" className={'form-control' + (errors.firstName && touched.firstName ? ' is-invalid' : '')} ></Field>
@@ -87,7 +84,7 @@ const Registration = () => {
                 </Form>
             }
         </Formik>
-        </>
+    </>
     );
 }
 
