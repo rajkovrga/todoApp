@@ -1,4 +1,5 @@
 using EntityContext;
+using EntityContract;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -34,6 +35,16 @@ public class DataContext : IdentityDbContext<AppUser>
     
         return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
     }
-   
+
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        builder.Entity<AppUser>()
+            .HasKey(x => x.Email);
+
+        base.OnModelCreating(builder);
+    }
+
     public DbSet<Job> Jobs { get; set; } = null!;
+    public DbSet<EmailVerification> EmailVerifications { get; set; } = null!;
+
 }

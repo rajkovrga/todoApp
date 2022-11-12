@@ -11,6 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 using ServiceContract.User;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 using Microsoft.EntityFrameworkCore;
+using EntityContract;
 
 namespace Service.User;
 
@@ -18,13 +19,10 @@ public class UserService : IUserService
 {
     private readonly UserManager<AppUser> _userManager;
     private readonly DataContext _dataContext;
-    private readonly IConfiguration _configuration;
-
-    public UserService(UserManager<AppUser> userManager, DataContext dataContext, IConfiguration configuration)
+    public UserService(UserManager<AppUser> userManager, DataContext dataContext)
     {
         _userManager = userManager;
         _dataContext = dataContext;
-        _configuration = configuration;
     }
 
     public async Task<UserReturnModel> Register(UserModel model)
@@ -62,71 +60,21 @@ public class UserService : IUserService
         };
     }
 
-    public string CreateToken(string email, string id)
+    public async Task VerifyUser(string token)
     {
-        var claims = new Claim[]
+        var tokenRow = _dataContext.EmailVerifications.FirstOrDefault(x => x.Token.Equals(token));
+
+        if(tokenRow is null)
         {
-            new(JwtRegisteredClaimNames.Sub, id),
-            new(JwtRegisteredClaimNames.Email, email),
-            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-        };
-
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
-        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
-
-        var token = new JwtSecurityToken(
-            _configuration["Jwt:Issuer"],
-            _configuration["Jwt:Audience"],
-            claims,
-            signingCredentials: creds,
-            expires: DateTime.UtcNow.AddMinutes(45)
-        );
-
-        return new JwtSecurityTokenHandler().WriteToken(token);
-    }
-
-    public async Task<TokenResultModel> CreateAuthToken(LoginModel model)
-    {
-        var user = await _userManager.FindByEmailAsync(model.Email);
-
-        if (user is null)
-        {
-            throw new ModelNotFoundException("User not exists");
+            throw new ModelNotFoundException("Token not found");
         }
 
-        if (!(await _userManager.CheckPasswordAsync(user!, model.Password)))
+        if ((DateTime.UtcNow.Ticks / 1000) > tokenRow.Exp)
         {
-            throw new NullReferenceException("Password is not correct");
+            throw new ExpireTokenException();
         }
 
-        var claims = new Claim[]
-        {
-            new(JwtRegisteredClaimNames.Sub, user!.Id),
-            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new(JwtRegisteredClaimNames.Email, user.Email)
-        };
-
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
-        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
-
-        var token = new JwtSecurityToken(
-            _configuration["Jwt:Issuer"],
-            _configuration["Jwt:Audience"],
-            claims,
-            signingCredentials: creds,
-            expires: DateTime.UtcNow.AddHours(1)
-        );
-
-        return new TokenResultModel()
-        {
-            Token = new JwtSecurityTokenHandler().WriteToken(token)
-        };
-
-    }
-
-    public async Task VerifyUser(string email)
-    {
-        var user = await _dataContext.Users.FirstOrDefaultAsync(x => x.Email == email);
+        var user = await _dataContext.Users.FirstOrDefaultAsync(x => x.Id == tokenRow!.UserId);
 
         if (user is null)
             throw new ModelNotFoundException("User not found");
@@ -135,6 +83,8 @@ public class UserService : IUserService
             throw new ModelNotFoundException("User just verified");
 
         user.EmailConfirmed = true;
+
+        _dataContext.Remove(tokenRow);
 
         await _dataContext.SaveChangesAsync();
     }
@@ -157,4 +107,5 @@ public class UserService : IUserService
             LastName = user.LastName
         };
     }
+
 }

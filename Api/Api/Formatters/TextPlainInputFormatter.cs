@@ -24,7 +24,7 @@ namespace Api.Formatters
         public override bool CanRead(InputFormatterContext context)
         {
             var contentType = context.HttpContext.Request.ContentType;
-            return contentType.StartsWith(ContentType);
+            return contentType!.StartsWith(ContentType);
         }
     }
 }

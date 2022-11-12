@@ -11,11 +11,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Api.Formatters;
-using System;
-using Microsoft.Extensions.Hosting;
-using Microsoft.AspNetCore.DataProtection;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.EntityFrameworkCore.Internal;
 using AppContext.Seeders;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -62,7 +57,8 @@ builder.Services
     .AddTransient<IJobService, JobService>()
     .AddTransient<IUserService, UserService>()
     .AddTransient<IConfiguration>(x => configuration)
-    .AddTransient<IEmailService, EmailService>();
+    .AddTransient<IEmailService, EmailService>()
+    .AddTransient<ITokenService, TokenService>();
 
 builder.Services.AddAuthorization(options =>
 {

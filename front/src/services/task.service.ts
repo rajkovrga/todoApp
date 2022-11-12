@@ -1,4 +1,3 @@
-import internal from "stream";
 import axiosInstance from "../api/axiosInstance";
 import { CREATE_JOB_ROUTE, EDIT_JOB_ROUTE, GET_ALL_JOB_ROUTE, RESEND_VERIFY_ROUTE, RESOLVE_JOB_ROUTE } from "../api/routes";
 import { JobModel } from "../models";

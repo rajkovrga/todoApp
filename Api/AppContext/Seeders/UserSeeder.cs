@@ -28,7 +28,6 @@ namespace AppContext.Seeders
                 .RuleFor(x => x.EmailConfirmed, f => true)
                 .RuleFor(x => x.UserName, f => f.Person.Email);
 
-            
             var users = userFaker.GenerateLazy(50).ToList();
 
             foreach (var item in users)
@@ -36,6 +35,18 @@ namespace AppContext.Seeders
                 await _userManager.CreateAsync(item, "Passw0rd");
                 await _userManager.AddToRoleAsync(_dataContext.Users.First(x => x.Email == item.Email), "user");
             }
+
+            var user = new AppUser
+            {
+                LastName = "Vrga",
+                FirstName = "Rajko",
+                UserName = "rajkovrga.it@gmail.com",
+                EmailConfirmed = true,
+                Email = "rajkovrga.it@gmail.com"
+            };
+            await _userManager.CreateAsync(user, "Passw0rd");
+            await _userManager.AddToRoleAsync(_dataContext.Users.First(x => x.Email == user.Email), "admin");
+
         }
     }
 }
