@@ -28,7 +28,8 @@ export interface JobReturnModel {
 }
 
 export interface TokenModel {
-    token: string;
+    accessToken: string;
+    refreshToken: string;
 }
 
 export interface QuoteModel {

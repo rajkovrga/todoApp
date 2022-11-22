@@ -1,8 +1,16 @@
 import { ErrorMessage, Field, Form, Formik } from "formik";
+import { useNavigate } from "react-router-dom";
 import * as Yup from 'yup';
+import { useState } from 'react';
+import { setTokenData } from "../../../features/slices/tokenSlice";
 import { LoginModel } from "../../../models";
+import { loginUser } from "../../../services/auth.service";
+import store from "../../../store/store";
 
 const Login = () =>  {
+    const navigate = useNavigate();
+    const dispatch = store.dispatch;
+    const [resultMessage, setResultMessage] = useState('');
 
     return (
         <Formik
@@ -24,17 +32,25 @@ const Login = () =>  {
                     password: fields.password
                 }
 
-                try
-                {
-                  //  const result = await loginUser(model);
-                  
-                }
-                catch(err)
-                {
+               try
+               {
+                   const result = await loginUser(model);
+                    dispatch(setTokenData(result.data));
 
+                    navigate('/');
                 }
-                        
-               
+                catch(err: any)
+                {
+                    const { status } = err.message.response;
+
+                    if(status === 400 || status === 400) {
+                        setResultMessage('Email or password is not good');
+                    } else if(status == 403){
+                        setResultMessage('User is not verificated');
+                    } else {
+                        setResultMessage('Application error');
+                    }
+                }
                 
                 resetForm({
                     values: {
@@ -61,7 +77,7 @@ const Login = () =>  {
                         </div>
                     </Form>
                     <div>
-                        <h5 id="login-result"></h5>
+                        <h5>{resultMessage}</h5>
                     </div>
                 </>
             )}

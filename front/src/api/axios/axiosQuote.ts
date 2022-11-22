@@ -7,4 +7,4 @@ export default axios.create({
         'Content-Type': 'application/json',
         'Accept': 'application/json'
     }
-})
+});

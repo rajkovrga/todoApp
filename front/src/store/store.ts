@@ -1,14 +1,12 @@
-import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
-import { setupListeners } from "@reduxjs/toolkit/dist/query";
-import tokenReducer from "../features/slices/tokenSlice";
+import { configureStore } from "@reduxjs/toolkit";
+import { tokenSlice } from "../features/slices/tokenSlice";
 
 export const store = configureStore({
-    reducer: tokenReducer,
-    middleware: (getDefaultMiddleware) => 
-        getDefaultMiddleware().concat()
+    reducer: {
+        token: tokenSlice.reducer
+    },
 });
 
 export default store;
-export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
-setupListeners(store.dispatch);
+export type AppDispatch = typeof store.dispatch;

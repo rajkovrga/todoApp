@@ -3,8 +3,10 @@ import * as Yup from 'yup';
 import { useState } from 'react';
 import { RegistrationModel } from "../../../models";
 import { registerUser } from "../../../services/auth.service";
+import { useAppSelector } from "../../../api/hooks";
+import { useDispatch } from "react-redux";
 
-const Registration = async () => {
+const Registration = () => {
     const [resultMessage, setResultMessage] = useState('');
     const init = {
         firstName: '',
@@ -12,7 +14,10 @@ const Registration = async () => {
         password: '',
         email: ''
     };
-
+    const selector = useAppSelector(state => state.token);
+    console.log(selector);
+    const dispatch = useDispatch();
+    console.log(dispatch);
     return (<>
         <Formik
             initialValues={init}
@@ -35,7 +40,6 @@ const Registration = async () => {
                     password: fields.password,
                     email: fields.email
                 }
-
                 try {
                     resetForm({
                         values: init
@@ -45,11 +49,15 @@ const Registration = async () => {
                     setResultMessage(`Verification email sent or <a href='verification/resend'>Resend again</a>`);
 
                 } catch (err: any) {
-                    if (err.status === 400) {
+                    const { status } = err.message.response;
+                    if (status === 400) {
                         setResultMessage('Any data is not in good format');
                     }
-                    else if (err.status === 404) {
+                    else if (status === 404) {
                         setResultMessage('User is not saved');
+                    }
+                    else if (status === 409) {
+                        setResultMessage('User exist');
                     }
                     else {
                         setResultMessage('Server error, try again later');
@@ -79,7 +87,8 @@ const Registration = async () => {
                         <button type="submit" className="btn btn-primary btn-block"> Registration </button>
                     </div>
                     <div>
-                        <h5>{resultMessage}</h5>
+                        <h5>
+                            <div dangerouslySetInnerHTML={{ __html: resultMessage }} /></h5>
                     </div>
                 </Form>
             }

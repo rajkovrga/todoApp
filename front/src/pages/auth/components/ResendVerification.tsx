@@ -1,8 +1,10 @@
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as Yup from 'yup';
 import { resendVerification } from "../../../services/auth.service";
+import { useState } from 'react';
 
 const ResendVerification = () => {
+    const [resultMessage, setResultMessage] = useState('');
     const init = {
         email: ''
     };
@@ -17,22 +19,22 @@ const ResendVerification = () => {
                     .required('Email is required')
                     .email('Email is invalid')
             })}
-            onSubmit={(fields, {resetForm}) => {
-                const result = document.getElementById("resend-result") as HTMLElement;
-                
-                resendVerification(fields.email).then(x => {
+            onSubmit={async (fields, {resetForm}) => {
+                try {
+                    await resendVerification(fields.email);
                     resetForm({
                         values: init
                     });
-                    
-                    if (x.status == 200) {
-                        result.innerHTML = 'Verification sent successfully';
+                    setResultMessage('Verification sent successfully');
+                }
+                catch(err: any) {
+                    const { status } = err.message.response;
+                    if (status === 404) {
+                        setResultMessage('Token is not exist');
+                    } else {
+                        setResultMessage('Application error');
                     }
-                })
-                    .catch(x => {
-                        console.log(x);
-                        result.innerHTML = 'Server error';
-                    })
+                }
             }}>
             {({ errors, status, touched }) => (
                 <Form name="resend-verification">
@@ -45,7 +47,7 @@ const ResendVerification = () => {
                         <button type="submit" className="btn btn-primary btn-block">Resend</button>
                     </div>
                     <div>
-                        <h5 id="resend-result"></h5>
+                        <h5>{resultMessage}</h5>
                     </div>
                 </Form>
             )}

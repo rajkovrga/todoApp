@@ -1,13 +1,15 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface StateTokenModel {
-    token: string | null,
-    permissions: string[] | null,
-    data: any | null
+    token: string,
+    refreshToken: string
+    permissions: string[],
+    data: any
 }
 
 let initialState: StateTokenModel = {
     token: '',
+    refreshToken: '',
     permissions: [],
     data: {}
 }
@@ -16,36 +18,43 @@ const tokenData = localStorage.getItem('token') ? JSON.parse(localStorage.getIte
 
 if(tokenData)
 {
-    const data = JSON.parse(tokenData);
-
     initialState = {
-        token: data.token,
-        permissions: data.permissions,
-        data: data.data
+        token: tokenData.token,
+        refreshToken: tokenData.refreshToken,
+        permissions: tokenData.permissions,
+        data: tokenData.data
     }
 }
 
-const tokenSlice = createSlice({
-    name: 'auth',
+export const tokenSlice = createSlice({
+    name: 'token',
     initialState: initialState,
     reducers: {
-        set: (state, action: PayloadAction<StateTokenModel>) => {
+        setTokenData: (state, action: PayloadAction<StateTokenModel>) => {
             localStorage.setItem('token', JSON.stringify({
-                token: action.payload.token,
+                accessToken: action.payload.token,
                 permissions: action.payload.permissions,
-                data: action.payload.data
+                data: action.payload.data,
+                refreshToken: action.payload.refreshToken
             }))
-                const {token, permissions, data} = action.payload;
+                const {token, refreshToken, permissions, data} = action.payload;
                 state.token = token;
+                state.refreshToken = refreshToken;
                 state.permissions = permissions;
                 state.data = data;
         },
-        remove: (state) => {
+        removeTokenData: (state) => {
             localStorage.removeItem('token');
-            state = initialState;
-        }
+            state = {
+                token: '',
+                refreshToken: '',
+                permissions: [],
+                data: {}
+            };
+            return state;
+        },
+        getTokenData: (state) => state
     }
 });
 
-export default tokenSlice.reducer;
-export const {set, remove} = tokenSlice.actions;
+export const {setTokenData, removeTokenData, getTokenData} = tokenSlice.actions;

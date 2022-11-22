@@ -14,15 +14,15 @@ function AppRouter() {
             <Router>
                 <Nav />
                 <div className="container-fluid">
-                    <Routes>
-                        <Route path=''  element={<Home/>} />
-                        <Route path='login' element={<Auth/>} />
-                        <Route path=':date' element={<DateProvider><Jobs/></DateProvider>}/>
-                        <Route path="*" to='/404' element={<PageResult />} />
-                        <Route path='/404' element={<PageResult/>} />
-                        <Route path='verification/resend' element={<ResendVerification />} />
-                        <Route path='user/verify/:token' element={<Verificated />} />
-                    </Routes> 
+                        <Routes>
+                            <Route path=''  element={<Home/>} />
+                            <Route path='login' element={<Auth/>} />
+                            <Route path=':date' element={<DateProvider><Jobs/></DateProvider>}/>
+                            <Route path="*" to='/404' element={<PageResult />} />
+                            <Route path='/404' element={<PageResult/>} />
+                            <Route path='verification/resend' element={<ResendVerification />} />
+                            <Route path='user/verify/:token' element={<Verificated />} />
+                        </Routes> 
                 </div>
             </Router>
         </>

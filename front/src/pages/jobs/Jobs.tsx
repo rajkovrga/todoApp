@@ -7,7 +7,6 @@ import { DateContext } from "../../context/DateProvider";
 
 
 const Jobs = () => {
-
     const url = useLocation();
     const navigate = useNavigate();
     const { date } = useParams();
