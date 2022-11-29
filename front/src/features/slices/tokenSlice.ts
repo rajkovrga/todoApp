@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { RootState } from "../../store/store";
 
 export interface StateTokenModel {
     token: string,
@@ -32,16 +33,15 @@ export const tokenSlice = createSlice({
     reducers: {
         setTokenData: (state, action: PayloadAction<StateTokenModel>) => {
             localStorage.setItem('token', JSON.stringify({
-                accessToken: action.payload.token,
+                token: action.payload.token,
                 permissions: action.payload.permissions,
                 data: action.payload.data,
                 refreshToken: action.payload.refreshToken
             }))
-                const {token, refreshToken, permissions, data} = action.payload;
-                state.token = token;
-                state.refreshToken = refreshToken;
-                state.permissions = permissions;
-                state.data = data;
+            state.token = action.payload.token;
+            state.permissions = action.payload.permissions;
+            state.data = action.payload.data;
+            state.refreshToken = action.payload.refreshToken;
         },
         removeTokenData: (state) => {
             localStorage.removeItem('token');
@@ -56,5 +56,6 @@ export const tokenSlice = createSlice({
         getTokenData: (state) => state
     }
 });
-
 export const {setTokenData, removeTokenData, getTokenData} = tokenSlice.actions;
+
+export const selectTokenState = (state: RootState) => state.token;

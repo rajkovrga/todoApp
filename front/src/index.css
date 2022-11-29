@@ -5,7 +5,7 @@
   font-family: 'Roboto';
   font-weight: normal;
   src: url('./assets/fonts/Roboto-Regular.woff2') format('woff2'),
-      url('./assets/fonts/Roboto-Regular.woff') format('woff');
+    url('./assets/fonts/Roboto-Regular.woff') format('woff');
   font-style: normal;
 }
 
@@ -13,7 +13,7 @@
   font-family: 'Roboto';
   font-weight: 300;
   src: url('./assets/fonts/Roboto-Light.woff2') format('woff2'),
-      url('./assets/fonts/Roboto-Light.woff') format('woff');
+    url('./assets/fonts/Roboto-Light.woff') format('woff');
   font-style: normal;
 }
 
@@ -21,7 +21,7 @@
   font-family: 'Roboto';
   font-weight: 100;
   src: url('./assets/fonts/Roboto-Thin.woff2') format('woff2'),
-      url('./assets/fonts/Roboto-Thin.woff') format('woff');
+    url('./assets/fonts/Roboto-Thin.woff') format('woff');
   font-style: normal;
 }
 
@@ -34,64 +34,58 @@
 body,
 div {
   box-sizing: border-box;
-margin: 0;
+  margin: 0;
   padding: 0;
 }
 
 button,
 input {
-border: 0;
-background: transparent;
-font-family: 'Roboto', sans-serif;
-font-weight: 300;
-cursor: pointer;
+  border: 0;
+  background: transparent;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
 }
 
-button:active,
-button:focus,
-input:focus {
-outline: none;
-}
 
 
 /*--------------------------------------------------------------
 ## Main
 --------------------------------------------------------------*/
 body {
-background-color: #fff;
-font-family: 'Roboto', sans-serif;
-display: flex;
-flex-direction: column;
+  background-color: #fff;
+  font-family: 'Roboto', sans-serif;
+  display: flex;
+  flex-direction: column;
 }
 
 .page-wrap {
-min-height: 100vh;
-flex: 1;
-display: flex;
-flex-direction: column;
+  min-height: 100vh;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .main {
-display: block;
-padding: 20px 0;
+  display: block;
+  padding: 20px 0;
 }
 
 .wrap {
-position: relative;
-width: 100%;
-max-width: 1024px;
-margin: 0 auto;
-padding: 0 30px;
+  position: relative;
+  width: 100%;
+  max-width: 1024px;
+  margin: 0 auto;
+  padding: 0 30px;
 }
 
 .align-right {
-text-align: right;
+  text-align: right;
 }
 
 @media only screen and (max-width: 600px) {
   .wrap {
-  padding: 0 15px;
-}
+    padding: 0 15px;
+  }
 }
 
 a {
@@ -112,6 +106,7 @@ a {
   display: flex;
   justify-content: space-evenly;
 }
+
 .auth form {
   width: 30%;
   padding: 20px;
@@ -125,7 +120,7 @@ a {
 @media only screen and (max-width: 800px) {
   .auth form {
     width: 40%;
-  
+
   }
 }
 
@@ -133,42 +128,43 @@ a {
 ## Header
 --------------------------------------------------------------*/
 .header {
-padding-top: 40px;
-background: #ff2843 url('./assets/images/header-bg.jpg') no-repeat left bottom;
-background-blend-mode: multiply;
-background-size: cover;
+  padding-top: 40px;
+  background: #ff2843 url('./assets/images/header-bg.jpg') no-repeat left bottom;
+  background-blend-mode: multiply;
+  background-size: cover;
 }
 
 .header-blockquote {
-max-width: 520px;
-margin-left: auto;
-padding: 40px 0;
-text-align: right;
+  max-width: 520px;
+  margin-left: auto;
+  padding: 40px 0;
+  text-align: right;
 }
 
 .header-quote {
-margin-top: 0;
-margin-bottom: 0.5em;
-color: #fff;
-font-size: 46px;
-font-weight: 300;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+  color: #fff;
+  font-size: 46px;
+  font-weight: 300;
 }
 
 .header-cite {
-color: #fff;
-font-size: 30px;
-font-weight: 100;
+  color: #fff;
+  font-size: 30px;
+  font-weight: 100;
 }
 
 @media only screen and (max-width: 600px) {
   .header-quote {
-  font-size: 30px;
+    font-size: 30px;
+  }
+
+  .header-cite {
+    font-size: 25px;
+  }
 }
 
-.header-cite {
-  font-size: 25px;
-}
-}
 .nav {
   position: sticky;
   display: flex;
@@ -177,21 +173,26 @@ font-weight: 100;
   height: 60px;
   top: 0;
 }
+
 .subnav {
   position: sticky;
   bottom: 0;
   top: 60px;
 }
+
 .nav {
   background: #42a5f5;
 }
+
 .nav__title {
   margin: 0px 30px;
 }
+
 .nav__item {
   display: inline-block;
   margin: 0px 30px;
 }
+
 .hero {
   display: grid;
   justify-content: center;
@@ -199,32 +200,39 @@ font-weight: 100;
   min-height: 100vh;
   background: #bbdefb;
 }
+
 .hero h1 {
   font-size: 6em;
   margin: 0 90px;
   text-align: center;
 }
+
 .subnav {
   background: #fff;
   border-bottom: 1px solid #222;
 }
+
 .subnav__container {
   align-items: baseline;
   display: flex;
   margin: 0 60px;
   padding: 15px 0;
 }
+
 .subnav__title {
   font-size: 1.25em;
 }
+
 .subnav__list {
   margin: 0 15px;
 }
+
 .subnav__item {
   display: inline-block;
   margin: 0 8px;
   padding: 5px;
 }
+
 .section {
   max-width: 900px;
   margin: 60px auto;
@@ -232,17 +240,19 @@ font-weight: 100;
   background-color: #ffcdd2;
   text-align: center;
 }
+
 .section h2 {
   font-size: 3em;
   margin-bottom: 15px;
 }
+
 .section p {
   line-height: 1.625em;
   margin: 0 auto;
   max-width: 480px;
 }
 
-nav li a{
+nav li a {
   color: white;
 }
 
@@ -251,60 +261,60 @@ nav li a{
 ## Date
 --------------------------------------------------------------*/
 .date-wrap {
-display: -webkit-box;
-display: -webkit-flex;
-display: -ms-flexbox;
-display: flex;
-align-items: center;
-padding: 35px 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  align-items: center;
+  padding: 35px 0;
 }
 
 .date-wrap time {
-display: block;
-margin-left: 40px;
-color: #fff;
-font-size: 23px;
-font-weight: 300;
+  display: block;
+  margin-left: 40px;
+  color: #fff;
+  font-size: 23px;
+  font-weight: 300;
 }
 
 .date-wrap .icon {
-width: 25px;
-height: 25px;
+  width: 25px;
+  height: 25px;
 }
 
 @media only screen and (max-width: 600px) {
-.date-wrap time {
-  margin-left: 20px;
-  font-size: 20px;
-}
+  .date-wrap time {
+    margin-left: 20px;
+    font-size: 20px;
+  }
 }
 
 /*--------------------------------------------------------------
 ## Form
 --------------------------------------------------------------*/
 .field-wrap {
-margin: 20px 0 40px;
+  margin: 20px 0 40px;
 }
 
 .field {
-display: block;
-box-sizing: border-box;
-width: 100%;
-padding: 15px;
-border-bottom: 1px solid #999;
-color: #999;
-font-size: 26px;
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 15px;
+  border-bottom: 1px solid #999;
+  color: #999;
+  font-size: 26px;
 }
 
 @media only screen and (max-width: 600px) {
   .field-wrap {
-  margin: 15px 0 20px;
-}
+    margin: 15px 0 20px;
+  }
 
-.field {
-  padding: 10px;
-  font-size: 20px;
-}
+  .field {
+    padding: 10px;
+    font-size: 20px;
+  }
 }
 
 
@@ -312,45 +322,43 @@ font-size: 26px;
 ## Buttons
 --------------------------------------------------------------*/
 .btn-job {
-padding: 15px 35px;
-transition: 350ms ease-in-out;
-background-color: #ff2843;
-color: #fff;
-font-size: 25px;
-font-weight: 300;
+  padding: 15px 35px;
+  transition: 350ms ease-in-out;
+  background-color: #ff2843;
+  color: #fff;
+  font-size: 25px;
+  font-weight: 300;
 }
 
 .btn-job:hover {
-background-color: #ee1732;
+  background-color: #ee1732;
 }
 
 .btn-job-icon {
-display: block;
-cursor: pointer;
+  display: block;
 }
 
 .btn-icon .icon {
-width: 45px;
-height: 45px;
-transform: scale(1);
-backface-visibility: hidden;
-transition: 350ms ease-in-out;
+  width: 45px;
+  height: 45px;
+  transform: scale(1);
+  backface-visibility: hidden;
 }
-.icon-plus
-{
+
+.icon-plus {
   width: 30px;
   height: 30px;
 }
 
 .btn-job-icon .icon:hover {
-transform: scale(1.1);
+  transform: scale(1.1);
 }
 
 @media only screen and (max-width: 600px) {
   .btn-job {
-  padding: 15px 25px;
-  font-size: 18px;
-}
+    padding: 15px 25px;
+    font-size: 18px;
+  }
 }
 
 
@@ -358,129 +366,57 @@ transform: scale(1.1);
 ## Checkflag Item
 --------------------------------------------------------------*/
 .item-row {
-margin: 20px 0;
+  margin: 20px 0;
+}
+.check-flag-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 30px;
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
 }
 
-.check-flag {
-display: -webkit-box;
-display: -webkit-flex;
-display: -ms-flexbox;
-display: flex;
-align-items: center;
-justify-content: space-between;
-padding: 30px;
-transition: 350ms ease-in-out;
-box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
-cursor: pointer;
-}
 
 .check-flag:hover {
-background-color: #f9f9f9;
+  background-color: #f9f9f9;
 }
 
 .check-flag-label {
-color: #666;
-font-size: 25px;
-font-weight: 300;
+  color: #666;
+  font-size: 25px;
+  font-weight: 300;
 }
 
-.checkbox-native {
-display: none;
-}
-
-.checkmark {
-display: block;
-position: relative;
-flex-shrink: 0;
-width: 18px;
-height: 18px;
-padding: 3px;
-transition: 350ms ease-in-out;
-border: 2px solid #999;
-border-radius: 3px;
-}
-
-.checkbox-native:checked + .checkmark {
-border-color: #ff2843;
-background-color: #ff2843;
-}
-
-.checkmark .checkmark-icon {
-transition: 350ms ease-in-out;
-stroke: white;
-stroke-width: 3px;
-stroke-dashoffset: 30;
-stroke-dasharray: 30;
-}
-
-.checkbox-native:checked + .checkmark .checkmark-icon {
-stroke-dashoffset: 0;
-}
 
 @media only screen and (max-width: 600px) {
-.check-flag {
-  padding: 20px;
-}
+  .check-flag {
+    padding: 20px;
+  }
 
-.check-flag-label {
-  font-size: 18px;
-}
-}
-
-
-/*--------------------------------------------------------------
-## Modal
---------------------------------------------------------------*/
-.modal-wrap {
-display: flex;
-visibility: hidden;
-position: fixed;
-z-index: 1;
-top: 0;
-left: 0;
-align-items: center;
-justify-content: center;
-width: 100%;
-height: 100%;
-transition: 350ms ease-in-out;
-opacity: 0;
-background-color: rgba(0, 0, 0, 0.7);
-}
-
-.modal {
-position: relative;
-width: 100%;
-max-width: 700px;
-padding: 50px 40px;
-background-color: #fff;
-box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.2);
-}
-
-.modal h2 {
-margin-top: 0;
-margin-bottom: 1em;
-color: #666;
-font-size: 30px;
-font-weight: 300;
-}
-
-.modal-wrap.is-visible {
-visibility: visible;
-opacity: 1;
-}
-
-@media only screen and (max-width: 600px) {
-.modal {
-  padding: 30px 20px;
-}
-
-.modal h2 {
-  font-size: 20px;
-}
+  .check-flag-label {
+    font-size: 18px;
+  }
 }
 
 /* verificated */
 
 #verificated {
   height: 300px;
+}
+
+/* job list */
+
+.job-list {
+  padding-bottom: 100px;
+}
+
+/* job item */
+
+.edit-icon {
+  margin-right: 20px;
+  padding-bottom: 10px;
+}
+
+.form-check {
+  margin-left: 30px;
 }

@@ -25,10 +25,11 @@ export interface JobReturnModel {
     id: string;
     description: string;
     title: string;
+    createdAt: Date;
 }
 
 export interface TokenModel {
-    accessToken: string;
+    token: string;
     refreshToken: string;
 }
 
@@ -40,3 +41,9 @@ export interface QuoteModel {
   length: number
   tags: string[]
 }
+
+export interface UserAuthData {
+    permissions: string[];
+    firstName: string;
+    lastName: string;
+};

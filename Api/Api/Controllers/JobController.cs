@@ -44,10 +44,10 @@ public class JobController : Controller
         await _jobService.Resolve(id, userId);
         return NoContent();
     }
-    
+
+    [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        var user = User;
         var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
         var jobs = await _jobService.GetJobs(id);
         return Ok(jobs);

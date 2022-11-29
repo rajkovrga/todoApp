@@ -3,29 +3,33 @@ import Quote from "./components/Quote";
 import PropTypes from 'prop-types';
 import { useLocation, useNavigate, useParams } from "react-router";
 import { useContext, useEffect } from "react";
-import { DateContext } from "../../context/DateProvider";
-
+import { DateJobContext } from "../../context/DateJobProvider";
+import store from "../../store/store";
 
 const Jobs = () => {
     const url = useLocation();
     const navigate = useNavigate();
     const { date } = useParams();
-    const [ contextDate, setDate ] = useContext(DateContext);
-
+    const { addDate } = useContext(DateJobContext);
 
     useEffect(() => {
-        setDate({
-            ...contextDate,
-            date
-        });
-    }, []);
+        if(date !== '') {
+            addDate(date ?? '');
+        }
+    }, [date, addDate]);
+
+    const state = store.getState();
+
+    if(state.token.token === '') {
+        navigate('/login');
+    }
 
     if (!/[//](\d{1,2})-(\d{1,2})-(\d{4})$/.test(url.pathname)) {
         return navigate('/404');
     }
 
     return (
-            <div>
+            <div> 
                 <Quote />
                 <JobList />
             </div>

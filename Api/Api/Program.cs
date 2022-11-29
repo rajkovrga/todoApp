@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Api.Formatters;
 using AppContext.Seeders;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -60,16 +61,22 @@ builder.Services
     .AddTransient<IEmailService, EmailService>()
     .AddTransient<ITokenService, TokenService>();
 
+builder.Services.AddAuthentication(auth =>
+{
+    auth.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    auth.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+});
+
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("BasicActions", policy =>
-        policy.RequireRole("user", "admin"));
+        policy.RequireRole(ClaimTypes.Role, "user", "admin"));
 
     options.AddPolicy("UserActions", policy =>
-        policy.RequireRole("user"));
+        policy.RequireRole(ClaimTypes.Role, "user"));
 
     options.AddPolicy("AdminActions", policy =>
-        policy.RequireRole("admin"));
+        policy.RequireRole(ClaimTypes.Role, "admin"));
 
 });
 
@@ -153,7 +160,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseCors(policyName);
 app.UseAuthorization();
 

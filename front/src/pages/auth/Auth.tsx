@@ -1,19 +1,16 @@
 import { useEffect, useState } from "react";
-import { redirect } from "react-router-dom";
 import { useAppSelector } from "../../api/hooks";
 import PageResult from "../../components/PageResult";
-import store from "../../store/store";
 import Login from "./components/Login";
 import Registration from "./components/Registration";
 
 const Auth = () => {
     const [isAuth, setIsAuth] = useState(true);
-
-    const selector = store.getState();
+    const selector = useAppSelector(state => state.token);
 
     useEffect(() => {
-        setIsAuth(selector.token.token === '');
-    }, [isAuth]);
+        setIsAuth(selector.token === '');
+    }, [isAuth, selector.token]);
 
     return (
         <div className="auth">

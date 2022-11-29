@@ -3,8 +3,6 @@ import * as Yup from 'yup';
 import { useState } from 'react';
 import { RegistrationModel } from "../../../models";
 import { registerUser } from "../../../services/auth.service";
-import { useAppSelector } from "../../../api/hooks";
-import { useDispatch } from "react-redux";
 
 const Registration = () => {
     const [resultMessage, setResultMessage] = useState('');
@@ -14,10 +12,7 @@ const Registration = () => {
         password: '',
         email: ''
     };
-    const selector = useAppSelector(state => state.token);
-    console.log(selector);
-    const dispatch = useDispatch();
-    console.log(dispatch);
+
     return (<>
         <Formik
             initialValues={init}

@@ -38,7 +38,7 @@ public class ErrorHandlerMiddleware
                     response.StatusCode = (int)HttpStatusCode.MethodNotAllowed;
                     break;
                 case IdentityException:
-                    response.StatusCode = (int) HttpStatusCode.NotFound;
+                    response.StatusCode = (int) HttpStatusCode.Forbidden;
                     break;
                 case ModelNotFoundException:
                     response.StatusCode = (int) HttpStatusCode.NotFound;
@@ -48,6 +48,9 @@ public class ErrorHandlerMiddleware
                     break;
                 case ExpireTokenException:
                     response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                    break;
+                case UserExistException:
+                    response.StatusCode = (int)HttpStatusCode.Conflict;
                     break;
                 default:
                     errorDetails.Message = error.Message;

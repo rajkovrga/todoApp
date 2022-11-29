@@ -2,6 +2,7 @@ using Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using ServiceContract.User;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace Api.Controllers;
 
@@ -25,7 +26,7 @@ public class UserController : Controller
         return Ok(token);
     }
 
-    [HttpPut("user/verify/{token}")]
+    [HttpPut("api/user/verify/{token}")]
     public async Task<IActionResult> VerifyEmail(string token)
     {
         if (token is null)
@@ -53,7 +54,7 @@ public class UserController : Controller
         return StatusCode(StatusCodes.Status201Created);
     }
 
-    [HttpPost("resend/verify")]
+    [HttpPost("api/resend/verify")]
     public async Task<IActionResult> ResendVerifyEmail([FromBody] string email)
     {
         var user = await _userService.GetUserByEmail(email);
@@ -70,7 +71,7 @@ public class UserController : Controller
         return Ok();
     }
 
-    [HttpPost("user/refresh")]
+    [HttpPost("api/user/refresh")]
     public async Task<IActionResult> RefreshToken([FromBody] TokenResultModel model)
     {
         var token = await _tokenService.RefreshToken(model.RefreshToken);
@@ -80,6 +81,16 @@ public class UserController : Controller
             Token = token,
             RefreshToken = model.RefreshToken
         });
+    }
+
+    [HttpGet("api/user/getUserData")]
+    public async Task<IActionResult> GetUserData()
+    {
+        var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        var data = await _userService.GetUserData(id);
+
+        return Ok(data);
     }
 
 }

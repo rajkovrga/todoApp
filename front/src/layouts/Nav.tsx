@@ -14,19 +14,27 @@ const Nav = () => {
                     <Link to="/">Home</Link>
                 </li>
                 {selector.token === '' &&
-
                     <li className="nav__item">
                         <Link to="/login">Login</Link>
                     </li>
+
                 }
-                
-                <li className="nav__item">
-                    <Link to={`/${moment().format("DD-MM-YYYY")}`}>Jobs</Link>
-                </li>
+
                 {selector.token !== '' &&
+                    <>
                     <li className="nav__item">
-                        <Logout />
-                    </li>
+                            <Link to={`/${moment().format("DD-MM-YYYY")}`}>Jobs</Link>
+                        </li>
+                        <li className="nav__item">
+                            <Logout />
+                        </li> 
+                    </>
+                }
+            
+                {selector.permissions.find(x => x == 'view-admin-panel') && 
+                    <li className="nav__item">
+                    <Link to="/admin">Admin</Link>
+                </li>
                 }
             </ul>
         </nav>

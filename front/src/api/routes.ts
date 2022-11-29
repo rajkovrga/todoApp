@@ -4,6 +4,7 @@ export const RESEND_VERIFY_ROUTE = '/resend/verify';
 export const REGISTRATION_USER_ROUTE = '/user/register';
 export const LOGIN_ROUTE = '/user/createToken';
 export const REFRESH_TOKEN_ROUTE = '/user/refresh';
+export const GET_USER_DATA_ROUTE = '/user/getUserData';
 
 // job routes
 export const EDIT_JOB_ROUTE = '/job/edit/';

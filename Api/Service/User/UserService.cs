@@ -12,6 +12,7 @@ using ServiceContract.User;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 using Microsoft.EntityFrameworkCore;
 using EntityContract;
+using System.Data.Entity;
 
 namespace Service.User;
 
@@ -30,6 +31,11 @@ public class UserService : IUserService
         if (model is null)
         {
             throw new NullReferenceException();
+        }
+
+        if(_dataContext.Users.Any(x => x.Email == model.Email))
+        {
+            throw new UserExistException();
         }
 
         var appUser = new AppUser()
@@ -108,4 +114,28 @@ public class UserService : IUserService
         };
     }
 
+    public async Task<UserDataModel> GetUserData(string id)
+    {
+        var user = _dataContext.Users.FirstOrDefault(x => x.Id == id);
+
+        if(user == null)
+        {
+            throw new ModelNotFoundException("User not found");
+        }
+
+        var data = new UserDataModel
+        {
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+        };
+        var roles = await _userManager.GetRolesAsync(user);
+
+        var permissions = _dataContext.RoleClaims.Where(x => roles.Any(s => s == x.ClaimType)).Select(x => x.ClaimValue).ToList();
+        if(permissions is not null)
+        {
+            data.Permissions = permissions.Select(x => x).ToList();
+        }
+
+        return data;
+    }
 }

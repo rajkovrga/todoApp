@@ -4,16 +4,13 @@ import Footer from './layouts/Footer';
 import AppRouter from './layouts/AppRouter';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-class App extends React.Component {
-
-  render() {
+const App = () => {
     return (
       <>
         <AppRouter />
         <Footer />
       </>
     );
-  }
 }
 
 export default App;

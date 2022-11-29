@@ -73,8 +73,10 @@ namespace Service.User
                 throw new IdentityException("User is not verificated");
             }
 
+            var roles = await _userManager.GetRolesAsync(user);
+
             var refreshToken = CreateRefreshToken();
-            var token = CreateJwtToken(user);
+            var token = CreateJwtToken(user, roles.ToList());
 
             user.RefreshToken = refreshToken;
             user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(Convert.ToDouble(_configuration["Jwt:RefreshTokenDays"]));
@@ -102,18 +104,25 @@ namespace Service.User
                 throw new ExpireTokenException("Token is expired");
             }
 
-            var token = CreateJwtToken(user);
+            var roles = await _userManager.GetRolesAsync(user);
+
+            var token = CreateJwtToken(user, roles.ToList());
 
             return token;
         }
-        private string CreateJwtToken(AppUser user)
+        private string CreateJwtToken(AppUser user, List<string> roles)
         {
-            var claims = new Claim[]
+            var claims = new List<Claim>()
             {
-            new(JwtRegisteredClaimNames.Sub, user!.Id),
-            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new(JwtRegisteredClaimNames.Email, user.Email)
+                new Claim(JwtRegisteredClaimNames.Sub, user!.Id),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(JwtRegisteredClaimNames.Email, user.Email)
             };
+
+            foreach (var item in roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, item));
+            }
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
@@ -121,7 +130,7 @@ namespace Service.User
             var token = new JwtSecurityToken(
                 _configuration["Jwt:Issuer"],
                 _configuration["Jwt:Audience"],
-                claims,
+                claims.ToArray(),
                 signingCredentials: creds,
                 expires: DateTime.UtcNow.AddHours(1)
             );

@@ -60,7 +60,8 @@ public class JobService : IJobService
             Id = newJob.Id,
             Title = newJob.Title,
             Description = newJob.Description,
-            User = user
+            User = user,
+            CreatedAt = newJob.CreatedAt
         };
     }
 
@@ -86,7 +87,8 @@ public class JobService : IJobService
             Id = x.Id,
             Description = x.Description,
             Title = x.Title,
-            User = x.AppUser
+            User = x.AppUser,
+            CreatedAt = x.CreatedAt
         }).ToList();
     }
 }

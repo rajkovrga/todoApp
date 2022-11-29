@@ -1,38 +1,38 @@
 import calendarItem from '../../../assets/icons/icon-calendar.svg';
-import plusItem from '../../../assets/icons/icon-plus.svg';
 import { useState, useEffect, useContext } from "react";
 import moment from "moment";
-import { DateContext } from '../../../context/DateProvider';
+import { DateJobContext } from '../../../context/DateJobProvider';
 import { QuoteModel } from '../../../models';
 import { getQuote } from '../../../services/quote.service';
 import Loading from '../../../components/Loading';
+import { AddJobModal } from './AddJobModal';
 
 const Quote = () => {
     const [quote, setQuote] = useState<QuoteModel>();
-    const [contextDate] = useContext(DateContext);
+    const contextDate = useContext(DateJobContext);
     const [isVisible, setVisibility] = useState(false);
 
     useEffect(() => {
-
         const action = async () => {
             const response = await getQuote();
             setQuote(response.data);
         }
         try {
             action();
-            setVisibility(true);
         }
         catch (err: any) {
             console.log(err);
+        }
+        finally {
+            setVisibility(true);
+
         }
     }, []);
 
     return (
         <header className="header">
             <div className="wrap">
-                <span className="btn-job-icon">
-                    <img className="icon icon-plus js-modal-init" src={plusItem} alt="Add New Item" />
-                </span>
+                <AddJobModal />
 
                 {isVisible ?
                     <div className="header-blockquote">
@@ -49,7 +49,6 @@ const Quote = () => {
                         <img className="icon" src={calendarItem} alt="Calendar" />
                         <time>{moment(contextDate.date, 'DD-MM-YYYY').format('DD / MM / YYYY')}</time>
                     </div>
-
                 </div>
             </div>
         </header>
